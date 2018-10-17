@@ -25,7 +25,7 @@ The create action is used to define the token with an issuer, a symbol and a max
 
 The issue action issues a certain amount of tokens to an account. Each time this action is performed, it raises the supply of the token. When the maximum supply is reached, it is impossible to issue more tokens. This action must be performed with the authority of the issuer account specified when the token was created. This action can be performed as: 
 
-####`cleos push action basiccontract transfer '["from", "to", "quantity SYM", "memo]' -p from@active`
+#### `cleos push action basiccontract transfer '["from", "to", "quantity SYM", "memo]' -p from@active`
 
 The transfer action transfers tokens from account "from" to account "to". This action must be performed with the authority of account "from". Notice that if account "to" does not possess any of these tokens, this action creates a corresponding accounts table in the scope of "to". the RAM allocation for this table is payed by "from". 
 
