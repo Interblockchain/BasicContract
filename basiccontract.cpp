@@ -3,7 +3,7 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 
-#include "erc223.hpp"
+#include "basiccontract.hpp"
 
 namespace eosio
 {
