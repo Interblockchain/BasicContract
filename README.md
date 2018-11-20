@@ -7,7 +7,8 @@ On the Ethereum platform, the ERC20 ledgers are a two column table comprising us
 
 ![ledgers](https://interblockchain.io/illustrations/ledgers.png)
 
-#Installation
+
+# Installation
 Clone the directory into WORKDIR:
 
 `git clone https://gitlab.com/Interblockchain/eos-erc20-contract.git`
