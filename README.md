@@ -5,7 +5,7 @@ The basic standard API for tokens, on EOSio networks, does not allow practical i
 
 On the Ethereum platform, the ERC20 ledgers are a two column table comprising user accounts and account balances. The contract presented here and hosted on ESOio networks is based on a two column table comprising tokens and balances. In a nutshell, on Ethereum all users account are integrated into a single ledger and, on the EOSio networks, token owners have their personal ledgers
 
-![ledgers] (https://interblockchain.io/illustrations/ledgers.png)
+![ledgers](https://interblockchain.io/illustrations/ledgers.png)
 
 #Installation
 Clone the directory into WORKDIR:
