@@ -7,6 +7,8 @@ On the Ethereum platform, the ERC20 ledgers are a two column table comprising us
 
 ![ledgers](https://interblockchain.io/illustrations/ledgers.png)
 
+On EOSio, this current contract is hosted in users' RAM, a personal storage allocated for each user. The amount of RAM is dependant on the EOS at stake owned by users.
+
 
 # Installation
 Clone the directory into WORKDIR:
