@@ -1,5 +1,4 @@
 # Motivation
-<<<<<<< HEAD
 The basic standard API for tokens, on EOSio networks, does not allow practical implementations of non-custodian peer-to-peer applications. The following smart contract, closely inspired from the ERC-20 Ethereum standard, allows applications to allocate funds and impersonate users to perform transactions. To do so, two new actions are added to the basic contract:
 - transferFrom
 - approve
@@ -7,9 +6,6 @@ The basic standard API for tokens, on EOSio networks, does not allow practical i
 On the Ethereum platform, the ERC20 ledgers are a two column table comprising user accounts and account balances. The contract presented here and hosted on ESOio networks is based on a two column table comprising tokens and balances. In a nutshell, on Ethereum all users account are integrated into a single ledger and, on the EOSio networks, token owners have their personal ledgers
 
 ![ledgers] (https://interblockchain.io/illustrations/ledgers.png)
-=======
-The basic standard API for tokens within smart contracts on the WORBLI network, eosio.token, does not allow practical implementations of non-custodian peer-to-peer applications. The following smart contract, closely inspired from the ERC-20 Ethereum standard, allows tokenspre-approved other on-chain third parties to spend the specified tokens. To do so, we must include two new actions (transferFrom and approve) and one multi_index table (allowed) which includes the allowed spenders and their spending limit. 
->>>>>>> 51e6f5f3b4aefa221645760f7702cb1dab9e5f04
 
 #Installation
 Clone the directory into WORKDIR:
