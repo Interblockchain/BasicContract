@@ -1,4 +1,4 @@
-# Motivation
+# Introduction
 The basic standard API for tokens, on EOSio networks, does not allow practical implementations of non-custodian peer-to-peer applications. The following smart contract, closely inspired from the ERC-20 Ethereum standard, allows applications to allocate funds and impersonate users to perform transactions. To do so, two new actions are added to the basic contract:
 - transferFrom
 - approve
