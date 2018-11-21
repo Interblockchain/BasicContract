@@ -3,11 +3,11 @@ The basic standard API for tokens, on EOSio networks, does not allow practical i
 - transferFrom
 - approve
 
-On the Ethereum platform, the ERC20 ledgers are a two column table comprising user accounts and account balances. The contract presented here and hosted on ESOio networks is based on a two column table comprising tokens and balances. In a nutshell, on Ethereum all users account are integrated into a single ledger and, on the EOSio networks, token owners have their personal ledgers
+On the Ethereum platform, tokens are implemented as ledgers with a Solidity smart contract. These ERC20 ledgers are set as two column tables comprising user accounts and account balances (see left illustration below). The contract presented in this document is hosted in ESOio networks. It is based on a two column table comprising tokens and balances (see right illustration below). On the one hand, on Ethereum, tokens are implemented as two column ledger (account, balance). On the other hand, this presently documented contract, is implemented as a two column ledger (token, balance) hosted in users' RAM.
 
 ![ledgers](https://interblockchain.io/illustrations/ledgers.png)
 
-On EOSio, this current contract is hosted in users' RAM, a personal storage allocated for each user. The amount of RAM is dependant on the EOS at stake owned by users.
+On EOSio, this current contract is hosted in users' RAM, a personal storage allocated for each user. The amount of RAM is dependant on the EOS at stake owned by users. Each table's row is dedicated to a token.
 
 
 # Installation
