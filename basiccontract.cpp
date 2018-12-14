@@ -7,7 +7,7 @@
 
 namespace eosio
 {
-void ERC20Token::create(account_name issuer,
+void BasicToken::create(account_name issuer,
                         asset maximum_supply)
 {
     require_auth(_self);
@@ -29,7 +29,7 @@ void ERC20Token::create(account_name issuer,
     });
 }
 
-void ERC20Token::issue(account_name to, asset quantity, string memo)
+void BasicToken::issue(account_name to, asset quantity, string memo)
 {
     auto sym = quantity.symbol;
     eosio_assert(sym.is_valid(), "invalid symbol name");
@@ -60,7 +60,7 @@ void ERC20Token::issue(account_name to, asset quantity, string memo)
     }
 }
 
-void ERC20Token::transfer(account_name from,
+void BasicToken::transfer(account_name from,
                           account_name to,
                           asset quantity,
                           string memo)
@@ -84,7 +84,7 @@ void ERC20Token::transfer(account_name from,
     add_balance(to, quantity, from);
 }
 
-void ERC20Token::transferfrom(account_name from,
+void BasicToken::transferfrom(account_name from,
                               account_name to,
                               account_name spender,
                               asset quantity,
@@ -125,7 +125,7 @@ void ERC20Token::transferfrom(account_name from,
     });
 }
 
-void ERC20Token::approve(account_name owner,
+void BasicToken::approve(account_name owner,
                          account_name spender,
                          asset quantity)
 {
@@ -166,7 +166,7 @@ void ERC20Token::approve(account_name owner,
     }
 }
 
-void ERC20Token::sub_balance(account_name owner, asset value)
+void BasicToken::sub_balance(account_name owner, asset value)
 {
     accounts from_acnts(_self, owner);
 
@@ -185,7 +185,7 @@ void ERC20Token::sub_balance(account_name owner, asset value)
     }
 }
 
-void ERC20Token::sub_balancefrom(account_name owner, account_name spender, asset value)
+void BasicToken::sub_balancefrom(account_name owner, account_name spender, asset value)
 {
     accounts from_acnts(_self, owner);
 
@@ -204,7 +204,7 @@ void ERC20Token::sub_balancefrom(account_name owner, account_name spender, asset
     }
 }
 
-void ERC20Token::add_balance(account_name owner, asset value, account_name ram_payer)
+void BasicToken::add_balance(account_name owner, asset value, account_name ram_payer)
 {
     accounts to_acnts(_self, owner);
     auto to = to_acnts.find(value.symbol.name());
@@ -224,4 +224,4 @@ void ERC20Token::add_balance(account_name owner, asset value, account_name ram_p
 
 } // namespace eosio
 
-EOSIO_ABI(eosio::ERC20Token, (create)(issue)(transfer)(approve)(transferfrom))
+EOSIO_ABI(eosio::BasicToken, (create)(issue)(transfer)(approve)(transferfrom))

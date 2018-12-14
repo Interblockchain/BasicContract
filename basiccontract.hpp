@@ -12,10 +12,10 @@ namespace eosiosystem {
 namespace eosio
 {
 using std::string;
-class ERC20Token : public eosio::contract
+class BasicToken : public eosio::contract
 {
   public:
-    ERC20Token(account_name self) : contract(self) {}
+    BasicToken(account_name self) : contract(self) {}
 
     void create(account_name issuer,
                 asset maximum_supply);
@@ -86,21 +86,21 @@ class ERC20Token : public eosio::contract
     };
 };
 
-asset ERC20Token::get_supply(symbol_name sym) const
+asset BasicToken::get_supply(symbol_name sym) const
 {
     stats statstable(_self, sym);
     const auto &st = statstable.get(sym);
     return st.supply;
 }
 
-asset ERC20Token::get_maxsupply(symbol_name sym) const
+asset BasicToken::get_maxsupply(symbol_name sym) const
 {
     stats statstable(_self, sym);
     const auto &st = statstable.get(sym);
     return st.max_supply;
 }
 
-asset ERC20Token::get_balance(account_name owner, symbol_name sym) const
+asset BasicToken::get_balance(account_name owner, symbol_name sym) const
 {
     accounts accountstable(_self, owner);
     const auto &ac = accountstable.get(sym);
