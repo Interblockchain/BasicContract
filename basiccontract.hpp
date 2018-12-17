@@ -5,8 +5,9 @@
 
 #include <string>
 
-namespace eosiosystem {
-   class system_contract;
+namespace eosiosystem
+{
+class system_contract;
 }
 
 namespace eosio
@@ -28,11 +29,11 @@ class BasicToken : public eosio::contract
                   string memo);
 
     void transferfrom(account_name from,
-                  account_name to,
-                  account_name spender,
-                  asset quantity,
-                  string memo);
-    
+                      account_name to,
+                      account_name spender,
+                      asset quantity,
+                      string memo);
+
     void approve(account_name owner,
                  account_name spender,
                  asset quantity);
@@ -65,7 +66,7 @@ class BasicToken : public eosio::contract
         account_name spender;
         asset quantity;
 
-        uint64_t primary_key() const {return key;}
+        uint64_t primary_key() const { return key; }
     };
 
     typedef eosio::multi_index<N(accounts), account> accounts;
