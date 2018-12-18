@@ -267,4 +267,4 @@ void token::close( name owner, const symbol& symbol )
 
 } // namespace eosio
 
-EOSIO_ABI(eosio::BasicToken, (create)(issue)(transfer)(approve)(transferfrom)(open)(close)(retire))
+EOSIO_DISPATCH(eosio::BasicToken, (create)(issue)(transfer)(approve)(transferfrom)(open)(close)(retire))
