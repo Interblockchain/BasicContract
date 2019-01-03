@@ -13,7 +13,7 @@ class system_contract;
 namespace eosio
 {
 using std::string;
-class[[eosio::contract("BasicToken")]] token : public contract
+class[[eosio::contract("BasicToken")]] BasicToken : public contract
 {
   public:
     using contract::contract;
@@ -74,11 +74,6 @@ class[[eosio::contract("BasicToken")]] token : public contract
         const auto& ac = accountstable.get( sym_code.raw() );
         return ac.balance;
     }
-
-    inline asset get_supply(symbol_name sym) const;
-    inline asset get_maxsupply(symbol_name sym) const;
-
-    inline asset get_balance(account_name owner, symbol_name sym) const;
 
   private:
     struct [[eosio::table]] account

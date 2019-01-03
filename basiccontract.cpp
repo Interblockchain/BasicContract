@@ -59,7 +59,7 @@ void BasicToken::issue(name to, asset quantity, string memo)
     }
 }
 
-void token::retire(asset quantity, string memo)
+void BasicToken::retire(asset quantity, string memo)
 {
     auto sym = quantity.symbol;
     eosio_assert(sym.is_valid(), "invalid symbol name");
@@ -133,8 +133,8 @@ void BasicToken::transferfrom(name from,
     eosio_assert(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
     eosio_assert(memo.size() <= 256, "memo has more than 256 bytes");
 
-    allowed allowedtable(_self, from);
-    auto existing = allowedtable.find(spender + sym.raw()); //Find returns an iterator pointing to the found object
+    allowed allowedtable(_self, from.value);
+    auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
     eosio_assert(existing != allowedtable.end(), "spender not allowed");
     const auto &at = *existing;
 
@@ -175,12 +175,12 @@ void BasicToken::approve(name owner,
     eosio_assert(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
 
     // Making changes to allowed in owner scope
-    allowed allowedtable(_self, owner);
-    auto existing = allowedtable.find(spender + sym.raw()); //Find returns an iterator pointing to the found object
+    allowed allowedtable(_self, owner.value);
+    auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
     if (existing == allowedtable.end())
     {
         allowedtable.emplace(owner, [&](auto &a) {
-            a.key = spender + sym.raw();
+            a.key = spender.value + sym.raw();
             a.spender = spender;
             a.quantity = quantity;
         });
@@ -236,7 +236,7 @@ void BasicToken::add_balance(name owner, asset value, name ram_payer)
     }
 }
 
-void token::open( name owner, const symbol& symbol, name ram_payer )
+void BasicToken::open( name owner, const symbol& symbol, name ram_payer )
 {
    require_auth( ram_payer );
 
@@ -255,7 +255,7 @@ void token::open( name owner, const symbol& symbol, name ram_payer )
    }
 }
 
-void token::close( name owner, const symbol& symbol )
+void BasicToken::close( name owner, const symbol& symbol )
 {
    require_auth( owner );
    accounts acnts( _self, owner.value );

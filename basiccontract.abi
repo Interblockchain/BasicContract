@@ -1,15 +1,15 @@
 {
-   "version": "eosio::abi/1.2",
+   "version": "eosio::abi/1.0",
    "types": [{
-      "new_type_name": "account_name",
+      "new_type_name": "name",
       "type": "name"
    }],
   "structs": [{
       "name": "transfer",
       "base": "",
       "fields": [
-        {"name":"from", "type":"account_name"},
-        {"name":"to", "type":"account_name"},
+        {"name":"from", "type":"name"},
+        {"name":"to", "type":"name"},
         {"name":"quantity", "type":"asset"},
         {"name":"memo", "type":"string"}
       ]
@@ -17,9 +17,9 @@
       "name": "transferfrom",
       "base": "",
       "fields": [
-        {"name":"from", "type":"account_name"},
-        {"name":"to", "type":"account_name"},
-        {"name":"spender", "type":"account_name"},
+        {"name":"from", "type":"name"},
+        {"name":"to", "type":"name"},
+        {"name":"spender", "type":"name"},
         {"name":"quantity", "type":"asset"},
         {"name":"memo", "type":"string"}
       ]
@@ -27,14 +27,21 @@
      "name": "create",
      "base": "",
      "fields": [
-        {"name":"issuer", "type":"account_name"},
+        {"name":"issuer", "type":"name"},
         {"name":"maximum_supply", "type":"asset"}
      ]
   },{
      "name": "issue",
      "base": "",
      "fields": [
-        {"name":"to", "type":"account_name"},
+        {"name":"to", "type":"name"},
+        {"name":"quantity", "type":"asset"},
+        {"name":"memo", "type":"string"}
+     ]
+  },{
+     "name": "retire",
+     "base": "",
+     "fields": [
         {"name":"quantity", "type":"asset"},
         {"name":"memo", "type":"string"}
      ]
@@ -42,9 +49,24 @@
      "name": "approve",
      "base": "",
      "fields": [
-        {"name":"owner", "type":"account_name"},
-        {"name":"spender", "type":"account_name"},
+        {"name":"owner", "type":"name"},
+        {"name":"spender", "type":"name"},
         {"name":"quantity", "type":"asset"}
+     ]
+  },{
+     "name": "open",
+     "base": "",
+     "fields": [
+        {"name":"owner", "type":"name"},
+        {"name":"symbol", "type":"symbol&"},
+        {"name":"ram_payer", "type":"name"}
+     ]
+  },{
+     "name": "close",
+     "base": "",
+     "fields": [
+        {"name":"owner", "type":"name"},
+        {"name":"symbol", "type":"symbol&"}
      ]
   },{
       "name": "account",
@@ -58,14 +80,14 @@
       "fields": [
         {"name":"supply", "type":"asset"},
         {"name":"max_supply", "type":"asset"},
-        {"name":"issuer", "type":"account_name"}
+        {"name":"issuer", "type":"name"}
       ]
     },{
       "name": "allowed_struct",
       "base": "",
       "fields": [
         {"name":"key", "type": "uint64"},
-        {"name":"spender", "type":"account_name"},
+        {"name":"spender", "type":"name"},
         {"name":"quantity", "type":"asset"}
       ]
     }
@@ -78,6 +100,10 @@
       "name": "issue",
       "type": "issue",
       "ricardian_contract": ""
+    },{
+      "name": "retire",
+      "type": "retire",
+      "ricardian_contract": ""
     }, {
       "name": "create",
       "type": "create",
@@ -89,6 +115,14 @@
     }, {
       "name": "transferfrom",
       "type": "transferfrom",
+      "ricardian_contract": ""
+    },{
+      "name": "open",
+      "type": "open",
+      "ricardian_contract": ""
+    },{
+      "name": "close",
+      "type": "close",
       "ricardian_contract": ""
     }
   ],
