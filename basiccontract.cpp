@@ -162,22 +162,32 @@ void BasicToken::approve(account_name owner,
     const auto &at = *existing;
     if (existing == allowedtable.end())
     {
-        allowedtable.emplace(owner, [&](auto &a) {
-            a.key = spender + sym;
-            a.spender = spender;
-            a.quantity = quantity;
-        });
-    }
-    else if ( quantity.amount == 0)
-    {
-        allowedtable.erase(at);
+        if (quantity.amount == 0)
+        {
+            eosio_assert(false, "No allowance found: zero amount only permitted to erase existing allowances");
+        }
+        else
+        {
+            allowedtable.emplace(owner, [&](auto &a) {
+                a.key = spender + sym;
+                a.spender = spender;
+                a.quantity = quantity;
+            });
+        }
     }
     else
     {
-        
-        allowedtable.modify(at, owner, [&](auto &a) {
-            a.quantity = quantity;
-        });
+        if (quantity.amount == 0)
+        {
+            allowedtable.erase(at);
+        }
+        else
+        {
+
+            allowedtable.modify(at, owner, [&](auto &a) {
+                a.quantity = quantity;
+            });
+        }
     }
 }
 
