@@ -119,9 +119,20 @@ void BasicToken::transferfrom(account_name from,
 
     sub_balancefrom(from, at.spender, quantity);
     add_balance(to, quantity, spender);
-    allowedtable.modify(at, at.spender, [&](auto &a) {
-        a.quantity -= quantity;
-    });
+
+    // Now modify the allowed table to reflect the transaction.
+    // If the whole allowed amount is transfered, delete the table entry.
+    // Else, simply modify the amount.
+    if (at.quantity.amount == quantity.amount)
+    {
+        allowedtable.erase(at);
+    }
+    else
+    {
+        allowedtable.modify(at, at.spender, [&](auto &a) {
+            a.quantity -= quantity;
+        });
+    }
 }
 
 void BasicToken::approve(account_name owner,
@@ -142,12 +153,13 @@ void BasicToken::approve(account_name owner,
     require_recipient(spender);
 
     eosio_assert(quantity.is_valid(), "invalid quantity");
-    eosio_assert(quantity.amount > 0, "must transfer positive quantity");
+    eosio_assert(quantity.amount >= 0, "must transfer positive quantity");
     eosio_assert(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
 
     // Making changes to allowed in owner scope
     allowed allowedtable(_self, owner);
     auto existing = allowedtable.find(spender + sym); //Find returns an iterator pointing to the found object
+    const auto &at = *existing;
     if (existing == allowedtable.end())
     {
         allowedtable.emplace(owner, [&](auto &a) {
@@ -156,9 +168,13 @@ void BasicToken::approve(account_name owner,
             a.quantity = quantity;
         });
     }
+    else if ( quantity.amount == 0)
+    {
+        allowedtable.erase(at);
+    }
     else
     {
-        const auto &at = *existing;
+        
         allowedtable.modify(at, owner, [&](auto &a) {
             a.quantity = quantity;
         });
