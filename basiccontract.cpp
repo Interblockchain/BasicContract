@@ -148,9 +148,16 @@ void BasicToken::transferfrom(name from,
 
     sub_balancefrom(from, at.spender, quantity);
     add_balance(to, quantity, payer);
-    allowedtable.modify(at, at.spender, [&](auto &a) {
-        a.quantity -= quantity;
-    });
+    if (at.quantity.amount == quantity.amount)
+    {
+        allowedtable.erase(at);
+    }
+    else
+    {
+        allowedtable.modify(at, at.spender, [&](auto &a) {
+            a.quantity -= quantity;
+        });
+    }
 }
 
 void BasicToken::approve(name owner,
@@ -171,26 +178,40 @@ void BasicToken::approve(name owner,
     require_recipient(spender);
 
     eosio_assert(quantity.is_valid(), "invalid quantity");
-    eosio_assert(quantity.amount > 0, "must transfer positive quantity");
+    eosio_assert(quantity.amount >= 0, "must transfer positive quantity");
     eosio_assert(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
 
     // Making changes to allowed in owner scope
     allowed allowedtable(_self, owner.value);
     auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
+    const auto &at = *existing;
     if (existing == allowedtable.end())
     {
-        allowedtable.emplace(owner, [&](auto &a) {
-            a.key = spender.value + sym.raw();
-            a.spender = spender;
-            a.quantity = quantity;
-        });
+        if (quantity.amount > 0)
+        {
+            allowedtable.emplace(owner, [&](auto &a) {
+                a.key = spender.value + sym.raw();
+                a.spender = spender;
+                a.quantity = quantity;
+            });
+        }
+        else
+        {
+            eosio_assert(false, "No allowance found: zero amount only permitted to erase existing allowances");
+        }
     }
     else
     {
-        const auto &at = *existing;
-        allowedtable.modify(at, owner, [&](auto &a) {
-            a.quantity = quantity;
-        });
+        if (quantity.amount == 0)
+        {
+            allowedtable.erase(at);
+        }
+        else
+        {
+            allowedtable.modify(at, owner, [&](auto &a) {
+                a.quantity = quantity;
+            });
+        }
     }
 }
 
@@ -236,33 +257,34 @@ void BasicToken::add_balance(name owner, asset value, name ram_payer)
     }
 }
 
-void BasicToken::open( name owner, const symbol& symbol, name ram_payer )
+void BasicToken::open(name owner, const symbol &symbol, name ram_payer)
 {
-   require_auth( ram_payer );
+    require_auth(ram_payer);
 
-   auto sym_code_raw = symbol.code().raw();
+    auto sym_code_raw = symbol.code().raw();
 
-   stats statstable( _self, sym_code_raw );
-   const auto& st = statstable.get( sym_code_raw, "symbol does not exist" );
-   eosio_assert( st.supply.symbol == symbol, "symbol precision mismatch" );
+    stats statstable(_self, sym_code_raw);
+    const auto &st = statstable.get(sym_code_raw, "symbol does not exist");
+    eosio_assert(st.supply.symbol == symbol, "symbol precision mismatch");
 
-   accounts acnts( _self, owner.value );
-   auto it = acnts.find( sym_code_raw );
-   if( it == acnts.end() ) {
-      acnts.emplace( ram_payer, [&]( auto& a ){
-        a.balance = asset{0, symbol};
-      });
-   }
+    accounts acnts(_self, owner.value);
+    auto it = acnts.find(sym_code_raw);
+    if (it == acnts.end())
+    {
+        acnts.emplace(ram_payer, [&](auto &a) {
+            a.balance = asset{0, symbol};
+        });
+    }
 }
 
-void BasicToken::close( name owner, const symbol& symbol )
+void BasicToken::close(name owner, const symbol &symbol)
 {
-   require_auth( owner );
-   accounts acnts( _self, owner.value );
-   auto it = acnts.find( symbol.code().raw() );
-   eosio_assert( it != acnts.end(), "Balance row already deleted or never existed. Action won't have any effect." );
-   eosio_assert( it->balance.amount == 0, "Cannot close because the balance is not zero." );
-   acnts.erase( it );
+    require_auth(owner);
+    accounts acnts(_self, owner.value);
+    auto it = acnts.find(symbol.code().raw());
+    eosio_assert(it != acnts.end(), "Balance row already deleted or never existed. Action won't have any effect.");
+    eosio_assert(it->balance.amount == 0, "Cannot close because the balance is not zero.");
+    acnts.erase(it);
 }
 
 } // namespace eosio
