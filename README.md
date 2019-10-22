@@ -5,7 +5,8 @@ The basic standard API for tokens, on EOSio networks, does not allow practical i
 
 On the Ethereum platform, tokens are implemented as ledgers with a Solidity smart contract. These ERC20 ledgers are set as two column tables comprising user accounts and account balances (see left illustration below). The contract presented in this document is hosted in ESOio networks. It is based on a two column table comprising tokens and balances (see right illustration below). On the one hand, on Ethereum, tokens are implemented as two column ledger (account, balance). On the other hand, this presently documented contract, is implemented as a two column ledger (token, balance) hosted in users' RAM.
 
-![ledgers](https://interblockchain.io/illustrations/ledgers.png)
+<img src="ledgers.png" width="700">
+<!-- ![ledgers](https://interblockchain.io/illustrations/ledgers.png) -->
 
 On EOSio, this current contract is hosted in users' RAM, a personal storage allocated for each user. The amount of RAM is dependant on the EOS at stake owned by users. Each table's row is dedicated to a token.
 
