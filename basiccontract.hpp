@@ -161,6 +161,15 @@ public:
         return ac.balance;
     }
 
+    using create_action = eosio::action_wrapper<"create"_n, &BasicToken::create>;
+    using issue_action = eosio::action_wrapper<"issue"_n, &BasicToken::issue>;
+    using retire_action = eosio::action_wrapper<"retire"_n, &BasicToken::retire>;
+    using transfer_action = eosio::action_wrapper<"transfer"_n, &BasicToken::transfer>;
+    using transferfrom_action = eosio::action_wrapper<"transferfrom"_n, &BasicToken::transferfrom>;
+    using approve_action = eosio::action_wrapper<"approve"_n, &BasicToken::approve>;
+    using open_action = eosio::action_wrapper<"open"_n, &BasicToken::open>;
+    using close_action = eosio::action_wrapper<"close"_n, &BasicToken::close>;
+
 private:
     struct [[eosio::table]] account
     {
