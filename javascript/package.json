@@ -1,0 +1,20 @@
+{
+  "name": "eosplus",
+  "version": "1.0.1",
+  "main": "eosplus.js",
+  "author": {
+    "name": "Paul Boulanger"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./test.js",
+    "server": "babel-node ./test.js",
+    "dev": "NODE_ENV=development npm-run-all server"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bignumber.js": "^8.1.1",
+    "eos-transit": "^4.0.1",
+    "eos-transit-scatter-provider": "^4.0.1"
+  }
+}
