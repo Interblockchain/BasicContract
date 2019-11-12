@@ -1,4 +1,4 @@
-# EOSPlus
+# Basic Contract
 A small library which interfaces the actions of the basic Transledger C++ contract deployed on various EOS chains.
 In order to do so, we must first login into a wallet using the [eos-transit package](https://github.com/eosnewyork/eos-transit/tree/master/packages/eos-transit#basic-usage-example) and gain the required authorities for teh accounts performing the actions. 
 They are all bunched here for easy access, easy modification and to give a uniform convention for the different recurrent quantities.
@@ -35,6 +35,7 @@ let value = eosplus.transferfrom(wallet, from, to, spender, amount, decimals, sy
 
 # Methods
 
+## Create cryptocurrency
 ```javascript
 create(wallet: Wallet, issuer: string, max_supply: string, decimals, symbol: string) 
 ```
@@ -48,10 +49,10 @@ account on which the contract is deployed (that is to say: it can only be called
 * decimals: number of decimals to use for this currency,
 * symbol: symbol used to identify this currency (ex: TBTC).
 
+## Issue tokens
 ```javascript
 issue(wallet: Wallet, to: string, quantity, decimals, symbol: string, memo: string)
 ```
-
 This method is used for issuing currency. Once the cryptocurrency is created, the specified issuer can use this method to mint a specified amount of tokens and send them to an account. 
 
 ### Parameters:
@@ -62,6 +63,7 @@ This method is used for issuing currency. Once the cryptocurrency is created, th
 * symbol: symbol of the currency
 * memo: a memo
 
+## Transfer funds
 ```javascript
 transfer(wallet: Wallet, from: string, to: string, quantity, decimals, symbol: string, memo: string)
 ```
@@ -76,6 +78,7 @@ Transfer funds from one account to another.
 * symbol: symbol of the currency
 * memo: a memo
 
+## Transferfrom
 ```javascript
 transferfrom(wallet: Wallet, from: string, to: string, spender: string, quantity, decimals, symbol: string, memo: string)
 ```
@@ -91,6 +94,7 @@ Third party can use this method to transfer funds in the name of the owner. To b
 * symbol: symbol of the currency
 * memo: a memo
 
+## Approve spender
 ```javascript
 approve(wallet: Wallet, owner: string, spender: string, quantity, decimals, symbol: string)
 ```
@@ -104,6 +108,7 @@ Preapprove a spender to transfer up to a specified amount of funds in your name.
 * decimals: number of decimals used for the currency
 * symbol: symbol of the currency
 
+## Get Balance
 ```javascript
 getBalance(account: string, symbol: string)
 ```
@@ -113,6 +118,7 @@ Returns all the balances of the account. If a symbol is passed, returns only the
 * account: account possessing the tokens
 * symbol:  symbol of the currency (optional)
 
+## Get Allowance
 ```javascript
 getAllowance(account: string, spender: string, symbol: string)
 ```
