@@ -1,5 +1,5 @@
 # Introduction
-The basic standard API for tokens, on EOSio networks, does not allow practical implementations of non-custodian peer-to-peer applications. The following smart contract, closely inspired from the (ERC-20 Ethereum standard)[https://eips.ethereum.org/EIPS/eip-20], allows users to preapprove other account (or smart contracts) to spend a designated amount of funds in there name. To do so, we have implemented two new actions which are added to the standard `eosio.token` contract:
+The basic standard API for tokens, on EOSio networks, does not allow practical implementations of non-custodian peer-to-peer applications. The following smart contract, closely inspired from the [ERC-20 Ethereum standard](https://eips.ethereum.org/EIPS/eip-20), allows users to preapprove other account (or smart contracts) to spend a designated amount of funds in there name. To do so, we have implemented two new actions which are added to the standard `eosio.token` contract:
 
 - approve : Give spending privileges to another account
 - transferfrom: Spend funds in the name of another account which preapproved the spender
