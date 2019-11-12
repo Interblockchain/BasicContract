@@ -10,7 +10,7 @@ On the Ethereum platform, tokens are implemented as ledgers with a Solidity smar
 
 In contrast, in EOSio networks the standard `eosio.token` contract allows the creation of many tokens. The ledgers are set in a two column table comprising tokens and balances (see right illustration below) which are stored directly in the user's scope. This simplifies the query of all token balances for a user. 
 
-<img src="./ledgers.png" width="700">
+<img src="./contract/ledgers.png" width="700">
 
 # Table of Content
 We provide two repositories:
