@@ -13,7 +13,7 @@ In the working directory, simply issue:
 Simply import the module and construct a new instance by passing the connection parameters to the constructor.
 
 ```javascript
-const EOSPlus = require("EOSPlus");
+const contractAPI = require("./basiccontract.js");
 
 let params = {
     contractAddress: "ibclcontract",  //Account where the Transledger contract is deployed (usually: ibclcontract) 
@@ -24,20 +24,20 @@ let params = {
         chainId: "e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473"  // ChainId of the EOS chain (this example is for JUNGLE)
     }
 };
-const eosplus = new EOSPlus(params);
+const api = new contractAPI(params);
 ```
 
 Then you can invoke the methods, like for example:
 
 ```javascript
-let value = eosplus.transferfrom(wallet, from, to, spender, amount, decimals, symbol, memo);
+let response = api.transferfrom(wallet, from, to, spender, amount, decimals, symbol, memo);
 ```
 
 # Methods
 
 ## Create cryptocurrency
 ```javascript
-create(wallet: Wallet, issuer: string, max_supply: string, decimals, symbol: string) 
+let response = api.create(wallet: Wallet, issuer: string, max_supply: string, decimals, symbol: string);
 ```
 This method is used for creating new cryptocurrencies on the blockchain. As of now, it can only be called by the owner of the
 account on which the contract is deployed (that is to say: it can only be called by Transledger).
@@ -51,7 +51,7 @@ account on which the contract is deployed (that is to say: it can only be called
 
 ## Issue tokens
 ```javascript
-issue(wallet: Wallet, to: string, quantity, decimals, symbol: string, memo: string)
+let response = api.issue(wallet: Wallet, to: string, quantity, decimals, symbol: string, memo: string);
 ```
 This method is used for issuing currency. Once the cryptocurrency is created, the specified issuer can use this method to mint a specified amount of tokens and send them to an account. 
 
@@ -65,7 +65,7 @@ This method is used for issuing currency. Once the cryptocurrency is created, th
 
 ## Transfer funds
 ```javascript
-transfer(wallet: Wallet, from: string, to: string, quantity, decimals, symbol: string, memo: string)
+let response = api.transfer(wallet: Wallet, from: string, to: string, quantity, decimals, symbol: string, memo: string);
 ```
 Transfer funds from one account to another. 
 
@@ -80,7 +80,7 @@ Transfer funds from one account to another.
 
 ## Transferfrom
 ```javascript
-transferfrom(wallet: Wallet, from: string, to: string, spender: string, quantity, decimals, symbol: string, memo: string)
+let response = api.transferfrom(wallet: Wallet, from: string, to: string, spender: string, quantity, decimals, symbol: string, memo: string);
 ```
 Third party can use this method to transfer funds in the name of the owner. To be able to use this method, the owner of the funds must have previously approved the spender using the approve method.
 
@@ -96,7 +96,7 @@ Third party can use this method to transfer funds in the name of the owner. To b
 
 ## Approve spender
 ```javascript
-approve(wallet: Wallet, owner: string, spender: string, quantity, decimals, symbol: string)
+let response = api.approve(wallet: Wallet, owner: string, spender: string, quantity, decimals, symbol: string);
 ```
 Preapprove a spender to transfer up to a specified amount of funds in your name.
 
@@ -110,7 +110,7 @@ Preapprove a spender to transfer up to a specified amount of funds in your name.
 
 ## Get Balance
 ```javascript
-getBalance(account: string, symbol: string)
+let response = api.getBalance(account: string, symbol: string);
 ```
 Returns all the balances of the account. If a symbol is passed, returns only the balance in the specified cryptocurrency.
 
@@ -120,7 +120,7 @@ Returns all the balances of the account. If a symbol is passed, returns only the
 
 ## Get Allowance
 ```javascript
-getAllowance(account: string, spender: string, symbol: string)
+let response = api.getAllowance(account: string, spender: string, symbol: string);
 ```
 Returns all the allowances of the account. If a spender is passed, returns only the allowances for this spender.
 If a symbol is passed, returns only the allowances in the specified cryptocurrency.
