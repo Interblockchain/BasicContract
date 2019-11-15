@@ -1,6 +1,6 @@
 # Basic Contract
-A small library which interfaces the actions of the basic Transledger C++ contract deployed on various EOS chains.
-In order to do so, we must first login into a wallet using the [eos-transit package](https://github.com/eosnewyork/eos-transit/tree/master/packages/eos-transit#basic-usage-example) and gain the required authorities for teh accounts performing the actions. 
+A small library that interfaces the actions of the basic Transledger C++ contract deployed on various EOS chains.
+To do so, we must first log in into a wallet using the [eos-transit package](https://github.com/eosnewyork/eos-transit/tree/master/packages/eos-transit#basic-usage-example) and gain the required authorities for the accounts performing the actions. 
 They are all bunched here for easy access, easy modification and to give a uniform convention for the different recurrent quantities.
 
 #Installation
@@ -82,7 +82,7 @@ Transfer funds from one account to another.
 ```javascript
 let response = api.transferfrom(wallet: Wallet, from: string, to: string, spender: string, quantity, decimals, symbol: string, memo: string);
 ```
-Third party can use this method to transfer funds in the name of the owner. To be able to use this method, the owner of the funds must have previously approved the spender using the approve method.
+Third-party can use this method to transfer funds in the name of the owner. To be able to use this method, the owner of the funds must have previously approved the spender using the approve action.
 
 ### Parameters:
 * wallet: transit-eos wallet object which provide keys for the action
