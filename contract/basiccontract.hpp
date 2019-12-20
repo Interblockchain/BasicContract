@@ -1,3 +1,8 @@
+/**
+ *  @file
+ *  @copyright (c) 2019 Copyright Transledger inc. All rights reserved 
+**/
+
 #pragma once
 
 #include <eosio/asset.hpp>
