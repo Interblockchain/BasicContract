@@ -1,3 +1,5 @@
 *.wasm
+node_modules/
+bignumber_min.js
 .vscode/
 *.txt
