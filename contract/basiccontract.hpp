@@ -79,16 +79,52 @@ public:
                                     asset quantity,
                                     string memo);
 
-
+    /**
+    * Transferfrom action.
+    *
+    * @details Allows `spender` to transfer funds from the `from` account to `to` account.
+    * One account is debited and the other is credited with `quantity` tokens.
+    *
+    * @param from - the account to transfer from,
+    * @param to - the account to be transferred to,
+    * @param spender - the account of the delegated spender
+    * @param quantity - the quantity of tokens to be transferred,
+    * @param memo - the memo string to accompany the transaction.
+    */
     [[eosio::action]] void transferfrom(name from,
                                         name to,
                                         name spender,
                                         asset quantity,
                                         string memo);
 
+    /**
+    * Approve action.
+    *
+    * @details Allows `owner` to pre-approve `spender` to transfer `quantity` of funds from his account using the transferfrom action.
+    * This is the prerequisite for the transferfrom action. When called multiple times, the total pre-authorized amount is incremented
+    * by `quantity`. 
+    *
+    * @param owner - the account of the owner from which to transfer from,
+    * @param spender - the account of the delegated spender
+    * @param quantity - the quantity of tokens pre-approved to be spent,
+    */
     [[eosio::action]] void approve(name owner,
                                    name spender,
                                    asset quantity);
+
+    /**
+    * Unapprove action.
+    *
+    * @details Allows `owner` to remove `quantity` to a prior approval for `spender`. This is incremental. 
+    * If the total amount becomes zero, remove the allowance from the table freeing the RAM.
+    *
+    * @param owner - the account of the owner from which to transfer from,
+    * @param spender - the account of the delegated spender
+    * @param quantity - the quantity of tokens to remove from allowance,
+    */
+    [[eosio::action]] void unapprove(name owner,
+                                     name spender,
+                                     asset quantity);
 
     /**
     * Open action.
@@ -133,7 +169,7 @@ public:
         const auto &st = statstable.get(sym_code.raw());
         return st.supply;
     }
-    
+
     /**
     * Get max supply method.
     *
@@ -172,6 +208,7 @@ public:
     using transfer_action = eosio::action_wrapper<"transfer"_n, &BasicToken::transfer>;
     using transferfrom_action = eosio::action_wrapper<"transferfrom"_n, &BasicToken::transferfrom>;
     using approve_action = eosio::action_wrapper<"approve"_n, &BasicToken::approve>;
+    using unapprove_action = eosio::action_wrapper<"unapprove"_n, &BasicToken::unapprove>;
     using open_action = eosio::action_wrapper<"open"_n, &BasicToken::open>;
     using close_action = eosio::action_wrapper<"close"_n, &BasicToken::close>;
 

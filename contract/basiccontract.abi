@@ -89,17 +89,35 @@
       "base": "",
       "fields": [
         {
-          "name":"issuer", 
+          "name":"owner", 
           "type":"name"
         },
         {
           "name":"spender", 
           "type":"name"
         },
-	{
-	  "name":"quantity",
-	  "type":"asset"
-	}
+	      {
+	        "name":"quantity",
+	        "type":"asset"
+	      }
+      ]
+    },
+    {
+      "name": "unapprove",
+      "base": "",
+      "fields": [
+        {
+          "name":"owner", 
+          "type":"name"
+        },
+        {
+          "name":"spender", 
+          "type":"name"
+        },
+	      {
+	        "name":"quantity",
+	        "type":"asset"
+	      }
       ]
     },
     {
@@ -107,7 +125,7 @@
       "base": "",
       "fields": [
         {
-          "name":"issuer", 
+          "name":"from", 
           "type":"name"
         },
         {

@@ -178,7 +178,7 @@ void BasicToken::approve(name owner,
     require_recipient(spender);
 
     check(quantity.is_valid(), "invalid quantity");
-    check(quantity.amount >= 0, "must transfer positive quantity");
+    check(quantity.amount > 0, "Must approve non-zero positive quantity");
     check(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
 
     // Making changes to allowed in owner scope
@@ -187,29 +187,59 @@ void BasicToken::approve(name owner,
     const auto &at = *existing;
     if (existing == allowedtable.end())
     {
-        if (quantity.amount > 0)
-        {
-            allowedtable.emplace(owner, [&](auto &a) {
-                a.key = spender.value + sym.raw();
-                a.spender = spender;
-                a.quantity = quantity;
-            });
-        }
-        else
-        {
-            check(false, "No allowance found: zero amount only permitted to erase existing allowances");
-        }
+        allowedtable.emplace(owner, [&](auto &a) {
+            a.key = spender.value + sym.raw();
+            a.spender = spender;
+            a.quantity = quantity;
+        });
     }
     else
     {
-        if (quantity.amount == 0)
+        allowedtable.modify(at, owner, [&](auto &a) {
+            a.quantity += quantity;
+        });
+    }
+}
+
+void BasicToken::unapprove(name owner,
+                           name spender,
+                           asset quantity)
+{
+    check(owner != spender, "cannot allow self");
+
+    require_auth(owner);
+    check(is_account(spender), "spender account does not exist");
+
+    auto sym = quantity.symbol.code();
+    stats statstable(get_self(), sym.raw());
+    const auto &st = statstable.get(sym.raw());
+
+    // Notify both the sender and receiver upon action completion
+    require_recipient(owner);
+    require_recipient(spender);
+
+    check(quantity.is_valid(), "invalid quantity");
+    check(quantity.amount > 0, "Must approve non-zero positive quantity");
+    check(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
+
+    // Making changes to allowed in owner scope
+    allowed allowedtable(get_self(), owner.value);
+    auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
+    const auto &at = *existing;
+    if (existing == allowedtable.end())
+    {
+        check(false, "No allowance corresponding to spender and symbol");
+    }
+    else
+    {
+        if (quantity.amount == existing->quantity.amount)
         {
             allowedtable.erase(at);
         }
         else
         {
             allowedtable.modify(at, owner, [&](auto &a) {
-                a.quantity = quantity;
+                a.quantity -= quantity;
             });
         }
     }
