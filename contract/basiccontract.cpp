@@ -232,7 +232,7 @@ void BasicToken::unapprove(name owner,
     }
     else
     {
-        if (quantity.amount == existing->quantity.amount)
+        if (quantity.amount >= existing->quantity.amount)
         {
             allowedtable.erase(at);
         }
