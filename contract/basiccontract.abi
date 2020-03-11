@@ -63,6 +63,24 @@
        ]
     },
     {
+       "name": "open",
+       "base": "",
+       "fields": [
+          {
+            "name":"owner", 
+            "type":"name"
+          },
+          {
+            "name":"symbol", 
+            "type":"symbol"
+          },
+          {
+            "name":"ram_payer", 
+            "type":"name"
+          }
+       ]
+    },
+    {
       "name": "transfer",
       "base": "",
       "fields": [
@@ -228,7 +246,17 @@
       "name": "approve",
       "type": "approve",
       "ricardian_contract": ""
-    }
+    },
+    {
+      "name": "unapprove",
+      "type": "unapprove",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "open",
+      "type": "open",
+      "ricardian_contract": ""
+    },
   ],
   "tables": [
     {

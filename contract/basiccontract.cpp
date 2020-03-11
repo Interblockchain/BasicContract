@@ -136,7 +136,7 @@ void BasicToken::transferfrom(name from,
     allowed allowedtable(get_self(), from.value);
     auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
     check(existing != allowedtable.end(), "spender not allowed");
-    const auto &at = *existing;
+    const auto& at = *existing;
 
     require_auth(at.spender);
     check(at.quantity.is_valid(), "invalid allowed quantity");
@@ -154,7 +154,7 @@ void BasicToken::transferfrom(name from,
     }
     else
     {
-        allowedtable.modify(at, at.spender, [&](auto &a) {
+        allowedtable.modify(at, at.spender, [&](auto& a) {
             a.quantity -= quantity;
         });
     }
@@ -181,13 +181,17 @@ void BasicToken::approve(name owner,
     check(quantity.amount > 0, "Must approve non-zero positive quantity");
     check(quantity.symbol == st.supply.symbol, "symbol precision mismatch");
 
+    accounts from_acnts(get_self(), owner.value);
+    const auto &from = from_acnts.get(quantity.symbol.code().raw(), "no balance object found");
+
     // Making changes to allowed in owner scope
     allowed allowedtable(get_self(), owner.value);
-    auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
-    const auto &at = *existing;
-    if (existing == allowedtable.end())
+    auto allow = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
+    // const auto &at = *existing;
+    if (allow == allowedtable.end())
     {
-        allowedtable.emplace(owner, [&](auto &a) {
+        check(from.balance.amount >= quantity.amount, "Cannot approve more than balance");
+        allowedtable.emplace(owner, [&](auto& a) {
             a.key = spender.value + sym.raw();
             a.spender = spender;
             a.quantity = quantity;
@@ -195,7 +199,8 @@ void BasicToken::approve(name owner,
     }
     else
     {
-        allowedtable.modify(at, owner, [&](auto &a) {
+        check(from.balance.amount >= quantity.amount + allow->quantity.amount, "Cannot approve more than balance");
+        allowedtable.modify(allow, owner, [&](auto& a) {
             a.quantity += quantity;
         });
     }
@@ -224,24 +229,18 @@ void BasicToken::unapprove(name owner,
 
     // Making changes to allowed in owner scope
     allowed allowedtable(get_self(), owner.value);
-    auto existing = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
-    const auto &at = *existing;
-    if (existing == allowedtable.end())
+    auto allow = allowedtable.find(spender.value + sym.raw()); //Find returns an iterator pointing to the found object
+    const auto& at = *allow;
+    check(allow != allowedtable.end(), "No allowance corresponding to spender and symbol");
+    if (quantity.amount >= at.quantity.amount)
     {
-        check(false, "No allowance corresponding to spender and symbol");
+        allowedtable.erase(at);
     }
     else
     {
-        if (quantity.amount >= existing->quantity.amount)
-        {
-            allowedtable.erase(at);
-        }
-        else
-        {
-            allowedtable.modify(at, owner, [&](auto &a) {
-                a.quantity -= quantity;
-            });
-        }
+        allowedtable.modify(at, owner, [&](auto& a) {
+            a.quantity -= quantity;
+        });
     }
 }
 
@@ -252,7 +251,7 @@ void BasicToken::sub_balance(name owner, asset value)
     const auto &from = from_acnts.get(value.symbol.code().raw(), "no balance object found");
     check(from.balance.amount >= value.amount, "overdrawn balance");
 
-    from_acnts.modify(from, owner, [&](auto &a) {
+    from_acnts.modify(from, owner, [&](auto& a) {
         a.balance -= value;
     });
 }
@@ -264,7 +263,7 @@ void BasicToken::sub_balancefrom(name owner, name spender, asset value)
     const auto &from = from_acnts.get(value.symbol.code().raw(), "no balance object found");
     check(from.balance.amount >= value.amount, "overdrawn balance");
 
-    from_acnts.modify(from, spender, [&](auto &a) {
+    from_acnts.modify(from, spender, [&](auto& a) {
         a.balance -= value;
     });
 }
@@ -275,13 +274,13 @@ void BasicToken::add_balance(name owner, asset value, name ram_payer)
     auto to = to_acnts.find(value.symbol.code().raw());
     if (to == to_acnts.end())
     {
-        to_acnts.emplace(ram_payer, [&](auto &a) {
+        to_acnts.emplace(ram_payer, [&](auto& a) {
             a.balance = value;
         });
     }
     else
     {
-        to_acnts.modify(to, same_payer, [&](auto &a) {
+        to_acnts.modify(to, same_payer, [&](auto& a) {
             a.balance += value;
         });
     }
@@ -301,7 +300,7 @@ void BasicToken::open(name owner, const symbol &symbol, name ram_payer)
     auto it = acnts.find(sym_code_raw);
     if (it == acnts.end())
     {
-        acnts.emplace(ram_payer, [&](auto &a) {
+        acnts.emplace(ram_payer, [&](auto& a) {
             a.balance = asset{0, symbol};
         });
     }
@@ -319,4 +318,4 @@ void BasicToken::close(name owner, const symbol &symbol)
 
 } // namespace eosio
 
-EOSIO_DISPATCH(eosio::BasicToken, (create)(issue)(transfer)(approve)(transferfrom)(open)(close)(retire))
+EOSIO_DISPATCH(eosio::BasicToken, (create)(issue)(transfer)(approve)(unapprove)(transferfrom)(open)(close)(retire))
