@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@types/node": "^13.5.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bignumber.js": "^8.1.1",
     "int64_t": "^0.9.0"
   }
